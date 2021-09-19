@@ -59,7 +59,7 @@ class music(commands.Cog):
             self.current_song = self.queue[0]
             self.current_song_ends_at = int(
                 time.time()) + self.queue[0]['duration']
-            if (bool(os.getenv('IS_CLOUD')) == False):
+            if (os.getenv('IS_CLOUD') == "False"):
                 vc.play(discord.FFmpegOpusAudio(
                     executable=os.getenv('FFMPEG_EXECUTABLE_PATH'), source=self.queue.pop(0)["url"], **FFMPEG_OPTIONS))
             else:
