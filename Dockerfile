@@ -11,4 +11,6 @@ RUN pip install --no-cache-dir --upgrade pip && \
 
 RUN pwd
 
-CMD [ "python", "./main.py" ]
+CMD ["test.py"]
+
+ENTRYPOINT ["python3"]
