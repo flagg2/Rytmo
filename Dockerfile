@@ -6,8 +6,7 @@ RUN apt-get -y upgrade
 
 RUN apt-get install -y ffmpeg
 
-RUN pip install pipenv
-
-RUN pipenv install --system --deploy --ignore-pipfile
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir discord discord-components youtube-dl requests python-dotenv pynacl
 
 RUN python main.py
