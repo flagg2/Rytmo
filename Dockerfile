@@ -1,10 +1,12 @@
 FROM python:3.8-slim-buster
 
+ADD . /rytmo
+
+WORKDIR /rytmo
+
 RUN apt-get -y update
 
 RUN apt-get -y upgrade
-
-ADD main.py /
 
 RUN apt-get install -y ffmpeg
 
