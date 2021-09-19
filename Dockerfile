@@ -9,4 +9,6 @@ RUN apt-get install -y ffmpeg
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir discord discord-components youtube-dl requests python-dotenv pynacl
 
-RUN python main.py
+RUN pwd
+
+CMD [ "python", "./main.py" ]
