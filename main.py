@@ -24,15 +24,16 @@ def run(server_class=server.HTTPServer, handler_class=S):
     httpd.serve_forever()
 
 
-load_dotenv()
-run()
+if __name__ == '__main__':
 
-cogs = [music]
+    load_dotenv()
+    run()
 
+    cogs = [music]
 
-client = commands.Bot(command_prefix="!", intents=discord.Intents.all())
+    client = commands.Bot(command_prefix="!", intents=discord.Intents.all())
 
-for i in range(len(cogs)):
-    cogs[i].setup(client)
+    for i in range(len(cogs)):
+        cogs[i].setup(client)
 
-client.run(os.getenv('DISCORD_BOT_TOKEN'))
+    client.run(os.getenv('DISCORD_BOT_TOKEN'))
