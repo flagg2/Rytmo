@@ -4,13 +4,11 @@ RUN apt-get -y update
 
 RUN apt-get -y upgrade
 
+ADD main.py /
+
 RUN apt-get install -y ffmpeg
 
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir discord discord-components youtube-dl requests python-dotenv pynacl
 
-RUN pwd
-
-CMD ["main.py"]
-
-ENTRYPOINT ["python3"]
+CMD [ "python", "./main.py" ]
