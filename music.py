@@ -15,7 +15,10 @@ load_dotenv()
 
 
 def format_song(song):
-    return f"[{song['title']}]({song['webpage_url']} '{song['title']}') | `{format_duration(song['duration'])} Requested by: {song['author']}` \n"
+    title = song['title']
+    if len(title) > 50:
+        title = f'{title[:47]}...'
+    return f"[{title}]({song['webpage_url']} '{song['title']}') | `{format_duration(song['duration'])}` \n"
 
 
 def format_duration(duration):
@@ -115,8 +118,8 @@ class music(commands.Cog):
         await ctx.voice_client.disconnect()
 
     async def play_song(self, ctx, name, play_top):
-        if (len(name) < 4):
-            return await ctx.channel.send("Name of the song has to be at least 4 characters long")
+        if (len(name) < 3):
+            return await ctx.channel.send("Name of the song has to be at least 3 characters long")
         # join if not in channel
         if ctx.voice_client is None:
             await self.join(ctx)
@@ -173,20 +176,52 @@ class music(commands.Cog):
             title=f"Queue for {ctx.message.guild.name}", color=0x00ff00)
         embedVar.add_field(
             name="Now playing:", value=current_song_string, inline=False)
+        page = 0
         if (len(self.queue) > 0):
-            queue_string = ""
+            pages = []
             for index, song in enumerate(self.queue):
-                if index == 10:
-                    continue
-                queue_string += f'`{index+1}.` '
-                queue_string += format_song(song)
+                if index % 5 == 0:
+                    pages.append('')
+                pages[index//5] += f'`{index+1}.` '
+                pages[index//5] += format_song(song)
             embedVar.add_field(
-                name="Up next:", value=queue_string, inline=False)
+                name="Up next:", value=pages[page], inline=False)
         embedVar.add_field(
             name="Songs in queue:", value=len(self.queue), inline=True)
         embedVar.add_field(
             name="Playtime duration:", value=self.remaining_queue_time(False), inline=True)
-        await ctx.channel.send(embed=embedVar)
+        message = await ctx.channel.send(embed=embedVar)
+        # await message.add_reaction('⏮')
+        # await message.add_reaction('◀')
+        # await message.add_reaction('▶')
+        # await message.add_reaction('⏭')
+        # i = 0
+        # emoji = ''
+
+        # while True:
+        #     if emoji == '⏮':
+        #         i = 0
+        #         await self.client.edit_message(message, embed=pages[i])
+        #     elif emoji == '◀':
+        #         if i > 0:
+        #             i -= 1
+        #             await self.client.edit_message(message, embed=pages[i])
+        #     elif emoji == '▶':
+        #         if i < 2:
+        #             i += 1
+        #             await self.client.edit_message(message, embed=pages[i])
+        #     elif emoji == '⏭':
+        #         i = 2
+        #         await self.client.edit_message(message, embed=pages[i])
+
+        #     res = await message.wait_for_reaction(message=message, timeout=30.0)
+        #     if res == None:
+        #         break
+        #     if str(res[1]) != '<Bots name goes here>':  # Example: 'MyBot#1111'
+        #         emoji = str(res[0].emoji)
+        #         await client.remove_reaction(message, res[0].emoji, res[1])
+
+        # await client.clear_reactions(message)
 
 
 def setup(client):
